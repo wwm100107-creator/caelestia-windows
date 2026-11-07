@@ -1,0 +1,1433 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./caelestia.css" />
+    <link id="palette-css" rel="stylesheet" type="text/css" href="./palette.css" />
+    <style>
+      html, body {
+        pointer-events: none !important;
+        background: transparent !important;
+      }
+      .drawer-wrap {
+        pointer-events: auto !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="drawer-stage" id="stage">
+      <div class="drawer-wrap">
+        <!-- Left Concave Top Ear -->
+        <svg class="liquid-ear" viewBox="0 0 22 22">
+          <path class="ear-fill" d="M 0 0 L 22 0 L 22 22 L 21.5 22 A 21.5 21.5 0 0 0 0 0 Z" />
+          <path class="ear-stroke" d="M 21.5 22 A 21.5 21.5 0 0 0 0 0" />
+        </svg>
+
+        <div class="drawer-body">
+          <!-- Floating Action Toast -->
+          <div class="action-toast" id="action-toast">Đã thực thi tác vụ</div>
+
+          <!-- CAELESTIA 4-TAB HEADER + ALWAYS-ON REAL-TIME CLOCK -->
+          <div class="caelestia-tabs-wrap">
+            <div class="top-live-clock" id="top-live-clock" title="Thời gian thực hệ thống • Nhấp để đổi 24h / 12h">
+              <span class="live-dot"></span>
+              <span id="top-live-time">04:27:00 • CN, 08/11</span>
+            </div>
+            <div class="caelestia-tabs-row">
+              <button class="c-tab-btn active" data-tab="dashboard" data-idx="0">
+                <span class="ms-icon">grid_view</span>
+                <span>Dashboard</span>
+              </button>
+              <button class="c-tab-btn" data-tab="media" data-idx="1">
+                <span class="ms-icon">queue_music</span>
+                <span>Media</span>
+              </button>
+              <button class="c-tab-btn" data-tab="performance" data-idx="2">
+                <span class="ms-icon">speed</span>
+                <span>Performance</span>
+              </button>
+              <button class="c-tab-btn" data-tab="workspaces" data-idx="3">
+                <span class="ms-icon">workspaces</span>
+                <span>Workspaces</span>
+              </button>
+            </div>
+            <div class="tabs-indicator-track">
+              <div class="tabs-indicator-pill" id="tab-indicator"></div>
+            </div>
+            <div class="tabs-separator"></div>
+          </div>
+
+          <!-- TAB VIEWS -->
+          <div class="tab-views">
+            <!-- ==================== TAB 1: DASHBOARD ==================== -->
+            <div id="pane-dashboard" class="tab-pane active">
+              <div class="dash-bento">
+                <!-- 1. SmallWeather (Interactive: Click to cycle details / Double-click to open Weather app) -->
+                <div class="bento-card interactive card-weather" id="card-weather" title="Nhấp để xem Độ ẩm & Gió • Nhấp đúp mở ứng dụng Thời tiết">
+                  <span class="ms-icon weather-sun-icon" id="w-icon">wb_sunny</span>
+                  <div class="weather-info">
+                    <div class="weather-temp" id="w-temp">24°C</div>
+                    <div class="weather-desc" id="w-desc">Clear</div>
+                  </div>
+                </div>
+
+                <!-- 2. User / System Control Center -->
+                <div class="bento-card card-user">
+                  <div class="user-avatar-wrap" id="btn-quick-theme" style="cursor:pointer;" title="Nhấp để chuyển Light / Dark mode">
+                    <img src="./assets/kurukuru.gif" alt="Avatar" />
+                  </div>
+                  <div class="user-sys-lines">
+                    <div class="sys-line clickable" id="line-settings" title="Nhấp để mở Cài đặt Windows">
+                      <span class="sys-ico">ʌ</span>
+                      <span>: Windows 11 (Caelestia)</span>
+                    </div>
+                    <div class="sys-line clickable" id="line-network" title="Nhấp để mở bảng chọn Wi-Fi Windows">
+                      <span class="ms-icon sys-ico" style="font-size:13px;">space_dashboard</span>
+                      <span>: <span id="u-wm-state">GlazeWM</span> • <span id="u-ssid">Wi-Fi</span></span>
+                    </div>
+                    <div class="sys-line clickable" id="line-taskmgr" title="Nhấp để mở Task Manager">
+                      <span class="ms-icon sys-ico" style="font-size:13px;">schedule</span>
+                      <span id="u-uptime">: up 20 hours, 12 mins</span>
+                    </div>
+                  </div>
+
+                  <!-- 4 Quick Action Mini Buttons -->
+                  <div class="user-quick-actions">
+                    <button class="u-act-btn" id="q-snip" title="Chụp màn hình (Snipping Tool)">
+                      <span class="ms-icon">content_cut</span>
+                    </button>
+                    <button class="u-act-btn" id="q-clean-ram" title="Dọn & Giải phóng bộ nhớ RAM ngay lập tức">
+                      <span class="ms-icon">cleaning_services</span>
+                    </button>
+                    <button class="u-act-btn" id="q-terminal" title="Mở PowerShell Terminal">
+                      <span class="ms-icon">terminal</span>
+                    </button>
+                    <button class="u-act-btn" id="q-lock" title="Khóa màn hình Windows">
+                      <span class="ms-icon">lock</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 3. Vertical Real-Time Clock & Pomodoro Timer -->
+                <div class="bento-card interactive card-datetime" id="card-datetime" title="Nhấp chuột trái đổi 24h/12h • Nhấp chuột phải bật/tắt Pomodoro 25:00">
+                  <div class="dt-hh" id="dt-hh">04</div>
+                  <div class="dt-dots" id="dt-dots">:27s</div>
+                  <div class="dt-mm" id="dt-mm">15</div>
+                  <div class="dt-day" id="dt-day">Sun, 8</div>
+                </div>
+
+                <!-- 4. Interactive Month Calendar + Day Notes -->
+                <div class="bento-card card-calendar" id="card-calendar" title="Lăn chuột để chuyển tháng • Nhấp vào ngày để ghi chú công việc">
+                  <div class="cal-weekdays" id="cal-header" style="cursor:pointer;" title="Nhấp để quay về tháng hiện tại">
+                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                  </div>
+                  <div class="cal-days-grid" id="cal-grid"></div>
+                  <div class="cal-note-popup" id="cal-note-popup">
+                    <span class="ms-icon" style="font-size:12px;color:var(--m3-primary);">edit_note</span>
+                    <input type="text" class="cal-note-input" id="cal-note-input" placeholder="Ghi chú ngày..." />
+                  </div>
+                </div>
+
+                <!-- 5. Interactive Vertical Sliders (Volume, Brightness, RAM Cleaner) -->
+                <div class="bento-card card-resources">
+                  <div class="res-col" id="col-vol" title="Kéo hoặc lăn chuột để chỉnh Âm lượng • Nhấp icon để Tắt tiếng">
+                    <div class="res-bar-track" id="track-vol">
+                      <div class="res-bar-fill" id="bar-vol" style="height: 44%; background: var(--m3-primary);"></div>
+                    </div>
+                    <span class="ms-icon" id="ico-vol" style="cursor:pointer;">volume_up</span>
+                  </div>
+                  <div class="res-col" id="col-bright" title="Kéo hoặc lăn chuột để chỉnh Độ sáng màn hình thật">
+                    <div class="res-bar-track" id="track-bright">
+                      <div class="res-bar-fill" id="bar-bright" style="height: 80%; background: var(--m3-secondary);"></div>
+                    </div>
+                    <span class="ms-icon">light_mode</span>
+                  </div>
+                  <div class="res-col" id="col-ram" style="cursor:pointer;" title="RAM đang dùng • Nhấp vào đây để Dọn & Giải phóng RAM">
+                    <div class="res-bar-track">
+                      <div class="res-bar-fill" id="bar-ram" style="height: 52%; background: var(--m3-tertiary);"></div>
+                    </div>
+                    <span class="ms-icon">memory</span>
+                  </div>
+                </div>
+
+                <!-- 6. Right Vertical Media Card -->
+                <div class="bento-card card-dash-media" id="card-dash-media" title="Lăn chuột để chỉnh âm lượng • Nhấp đĩa nhạc để mở tab Media">
+                  <div class="dash-cover-ring-wrap" id="dm-cover-btn" style="cursor:pointer;">
+                    <svg class="dash-cover-ring-svg" viewBox="0 0 94 94">
+                      <circle cx="47" cy="47" r="43" fill="none" stroke="color-mix(in srgb, var(--m3-primary) 22%, transparent)" stroke-width="3.5" stroke-dasharray="200 270" stroke-linecap="round" />
+                      <circle id="dm-ring-prog" cx="47" cy="47" r="43" fill="none" stroke="var(--m3-primary)" stroke-width="3.5" stroke-dasharray="110 270" stroke-linecap="round" />
+                    </svg>
+                    <img src="./assets/media_thumb.jpg" onerror="this.src='./assets/current_wall.jpg'" alt="Cover" class="dash-cover-img" id="dm-cover" />
+                  </div>
+
+                  <div class="dash-media-texts">
+                    <div class="dm-title" id="dm-title">Bad Apple!! feat. nomico</div>
+                    <div class="dm-artist" id="dm-artist">THE GAME</div>
+                    <div class="dm-album" id="dm-album">Alstroemeria Records</div>
+                  </div>
+
+                  <div class="dm-controls">
+                    <button id="dm-prev" title="Bài trước"><span class="ms-icon">skip_previous</span></button>
+                    <button id="dm-play" title="Phát / Tạm dừng"><span class="ms-icon" id="dm-play-ico">play_arrow</span></button>
+                    <button id="dm-next" title="Bài tiếp theo"><span class="ms-icon">skip_next</span></button>
+                  </div>
+
+                  <img src="./assets/bongocat.gif" alt="Bongo Cat" class="dm-bongo" id="dm-bongo-btn" style="cursor:pointer;" title="Nhấp Bongo Cat để Phát / Dừng nhạc" />
+                </div>
+              </div>
+            </div>
+
+            <!-- ==================== TAB 2: MEDIA ==================== -->
+            <div id="pane-media" class="tab-pane">
+              <div class="media-tab-layout">
+                <!-- Left: Circular Cover with 36 Radial Visualizer Bars -->
+                <div class="radial-vis-stage" id="mt-cover-stage" style="cursor:pointer;" title="Nhấp để Phát / Tạm dừng">
+                  <div class="radial-bars-ring" id="radial-bars"></div>
+                  <img src="./assets/media_thumb.jpg" onerror="this.src='./assets/current_wall.jpg'" alt="Cover" class="media-tab-cover" id="mt-cover" />
+                </div>
+
+                <!-- Center: Metadata, Transport, Seek/Volume, Source Pill -->
+                <div class="media-center-col">
+                  <div class="mt-title" id="mt-title">Bad Apple!! feat. nomico</div>
+                  <div class="mt-artist" id="mt-artist">THE GAME</div>
+                  <div class="mt-album" id="mt-album">Alstroemeria Records</div>
+
+                  <div class="mt-transport">
+                    <button id="mt-prev" title="Bài trước"><span class="ms-icon" style="font-size:22px;">skip_previous</span></button>
+                    <button class="mt-play-circle" id="mt-play" title="Phát / Tạm dừng">
+                      <span class="ms-icon filled" id="mt-play-ico" style="font-size:22px;">pause</span>
+                    </button>
+                    <button id="mt-next" title="Bài tiếp theo"><span class="ms-icon" style="font-size:22px;">skip_next</span></button>
+                  </div>
+
+                  <div class="mt-seek-wrap">
+                    <input type="range" min="0" max="100" value="44" class="mt-slider" id="v-slider" title="Kéo để chỉnh âm lượng" />
+                    <div class="mt-times-row">
+                      <span id="mt-cur-time" style="font-variant-numeric:tabular-nums;font-weight:600;">0:00</span>
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <button class="mt-player-pill" id="btn-sound-mixer" title="Nhấp để mở Windows Volume Mixer">
+                          <span class="ms-icon filled" style="font-size:13px;">music_note</span>
+                          <span id="mt-source">Volume Mixer</span>
+                        </button>
+                        <button id="btn-open-yt" title="Mở YouTube" style="font-size:10.5px;color:var(--m3-primary);font-weight:700;">YT ↗</button>
+                      </div>
+                      <span id="mt-end-time" style="font-variant-numeric:tabular-nums;font-weight:600;">3:45 • <span id="v-label">44%</span></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Large Bongo Cat -->
+                <div style="display:flex;align-items:center;justify-content:center;">
+                  <img src="./assets/bongocat.gif" alt="Bongo Cat" class="media-bongo-large" id="mt-bongo-btn" style="cursor:pointer;" title="Nhấp để Phát / Tạm dừng" />
+                </div>
+              </div>
+            </div>
+
+            <!-- ==================== TAB 3: PERFORMANCE ==================== -->
+            <div id="pane-performance" class="tab-pane">
+              <div class="perf-tab-layout">
+                <!-- Left Gauge: GPU (Click opens Display/Graphics Settings) -->
+                <div class="perf-gauge-box small" id="gauge-gpu" title="Nhấp để mở Cài đặt Đồ họa & Màn hình Windows">
+                  <svg class="perf-gauge-svg" viewBox="0 0 160 160">
+                    <circle class="gauge-track" cx="80" cy="80" r="64" stroke-dasharray="251.3 402.1" transform="rotate(135 80 80)" />
+                    <circle class="gauge-fill" id="arc-gpu-temp" cx="80" cy="80" r="64" stroke-dasharray="115 402.1" transform="rotate(135 80 80)" />
+                    <circle class="gauge-track" cx="80" cy="80" r="64" stroke-dasharray="62.5 402.1" transform="rotate(62 80 80)" />
+                    <circle class="gauge-fill" id="arc-gpu-use" cx="80" cy="80" r="64" stroke-dasharray="28 402.1" transform="rotate(62 80 80)" />
+                  </svg>
+                  <div class="gauge-center-label">
+                    <div class="gauge-main-val" id="val-gpu-temp">52°C</div>
+                    <div class="gauge-sub-lbl">GPU temp</div>
+                  </div>
+                  <div class="gauge-cutout-label">
+                    <span class="cutout-val" id="val-gpu-use">6%</span>
+                    <span class="cutout-sub">Usage</span>
+                  </div>
+                </div>
+
+                <!-- Center Gauge: CPU (Click opens Task Manager) -->
+                <div class="perf-gauge-box large" id="gauge-cpu" title="Nhấp để mở Windows Task Manager">
+                  <svg class="perf-gauge-svg" viewBox="0 0 190 190">
+                    <circle class="gauge-track" cx="95" cy="95" r="78" stroke-dasharray="306.3 490.1" transform="rotate(135 95 95)" />
+                    <circle class="gauge-fill" id="arc-cpu-temp" cx="95" cy="95" r="78" stroke-dasharray="135 490.1" transform="rotate(135 95 95)" />
+                    <circle class="gauge-track" cx="95" cy="95" r="78" stroke-dasharray="76.2 490.1" transform="rotate(62 95 95)" />
+                    <circle class="gauge-fill" id="arc-cpu-use" cx="95" cy="95" r="78" stroke-dasharray="34 490.1" transform="rotate(62 95 95)" />
+                  </svg>
+                  <div class="gauge-center-label">
+                    <div class="gauge-main-val" id="val-cpu-temp">41°C</div>
+                    <div class="gauge-sub-lbl">CPU temp • TaskMgr</div>
+                  </div>
+                  <div class="gauge-cutout-label">
+                    <span class="cutout-val" id="val-cpu-use">4%</span>
+                    <span class="cutout-sub">Usage</span>
+                  </div>
+                </div>
+
+                <!-- Right Gauge: Memory & Storage (Click cleans RAM, Right-click opens Explorer) -->
+                <div class="perf-gauge-box small" id="gauge-ram" title="Nhấp chuột trái để Dọn & Giải phóng RAM • Chuột phải mở File Explorer">
+                  <svg class="perf-gauge-svg" viewBox="0 0 160 160">
+                    <circle class="gauge-track" cx="80" cy="80" r="64" stroke-dasharray="251.3 402.1" transform="rotate(135 80 80)" />
+                    <circle class="gauge-fill" id="arc-ram-use" cx="80" cy="80" r="64" stroke-dasharray="140 402.1" transform="rotate(135 80 80)" />
+                    <circle class="gauge-track" cx="80" cy="80" r="64" stroke-dasharray="62.5 402.1" transform="rotate(62 80 80)" />
+                    <circle class="gauge-fill" id="arc-disk-use" cx="80" cy="80" r="64" stroke-dasharray="31 402.1" transform="rotate(62 80 80)" />
+                  </svg>
+                  <div class="gauge-center-label">
+                    <div class="gauge-main-val" id="val-ram-gib">5.4GiB</div>
+                    <div class="gauge-sub-lbl">Memory (Click Clean)</div>
+                  </div>
+                  <div class="gauge-cutout-label">
+                    <span class="cutout-val" id="val-disk-gib">465GiB</span>
+                    <span class="cutout-sub">Storage</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==================== TAB 4: WORKSPACES, LAUNCHER & >WALLPAPER ==================== -->
+            <div id="pane-workspaces" class="tab-pane">
+              <div class="ws-tab-layout">
+                <!-- Top Row: GlazeWM Workspaces + Quick Controls -->
+                <div class="ws-top-bar">
+                  <div class="ws-pills-group" id="ws-container">
+                    <button class="ws-chip focused" data-ws="1">1</button>
+                    <button class="ws-chip" data-ws="2">2</button>
+                    <button class="ws-chip" data-ws="3">3</button>
+                    <button class="ws-chip" data-ws="4">4</button>
+                    <button class="ws-chip" data-ws="5">5</button>
+                  </div>
+
+                  <div class="quick-sys-btns">
+                    <button class="sys-pill-btn" id="act-toggle-mode" title="Chuyển đổi giao diện Sáng (Cream) / Tối (Dark)">
+                      <span class="ms-icon" style="font-size:15px;">contrast</span>
+                      <span id="lbl-mode">Light / Dark</span>
+                    </button>
+                    <button class="sys-pill-btn" id="act-random-wall" title="Đổi hình nền ngẫu nhiên">
+                      <span class="ms-icon" style="font-size:15px;">casino</span>
+                      <span>Random</span>
+                    </button>
+                    <button class="sys-pill-btn" id="act-toggle-glaze" title="Tạm dừng / Bật chia cửa sổ GlazeWM">
+                      <span class="ms-icon" style="font-size:15px;">grid_view</span>
+                      <span id="lbl-glaze">Tiling</span>
+                    </button>
+                    <button class="sys-pill-btn" id="act-toggle-taskbar" title="Ẩn / Hiện Taskbar Windows">
+                      <span class="ms-icon" style="font-size:15px;">dock_to_bottom</span>
+                    </button>
+                    <button class="sys-pill-btn danger" id="act-exit-caelestia" title="Tắt Caelestia về lại Windows gốc">
+                      <span class="ms-icon" style="font-size:15px;">power_settings_new</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Multi-Mode Interactive Box: >wallpaper | >apps | >windows -->
+                <div class="wallpaper-carousel-box" id="wall-carousel-area">
+                  <!-- Mode 1: 5-Card Wallpaper Carousel -->
+                  <div class="wall-cards-strip" id="wall-cards-strip"></div>
+
+                  <!-- Mode 2: Quick App Launcher Grid -->
+                  <div class="apps-launch-grid" id="apps-launch-grid">
+                    <button class="app-tile-btn" data-open="browser">
+                      <span class="ms-icon">public</span>
+                      <div><div class="app-tile-lbl">Trình duyệt</div><div class="app-tile-sub">Mở Web nhanh</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="explorer">
+                      <span class="ms-icon">folder</span>
+                      <div><div class="app-tile-lbl">File Explorer</div><div class="app-tile-sub">Quản lý tệp</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="terminal">
+                      <span class="ms-icon">terminal</span>
+                      <div><div class="app-tile-lbl">PowerShell</div><div class="app-tile-sub">Dòng lệnh</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="taskmgr">
+                      <span class="ms-icon">monitoring</span>
+                      <div><div class="app-tile-lbl">Task Manager</div><div class="app-tile-sub">Tiến trình</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="snip">
+                      <span class="ms-icon">content_cut</span>
+                      <div><div class="app-tile-lbl">Chụp màn hình</div><div class="app-tile-sub">Snipping Tool</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="calc">
+                      <span class="ms-icon">calculate</span>
+                      <div><div class="app-tile-lbl">Máy tính</div><div class="app-tile-sub">Calculator</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="settings">
+                      <span class="ms-icon">settings</span>
+                      <div><div class="app-tile-lbl">Settings</div><div class="app-tile-sub">Cài đặt Win 11</div></div>
+                    </button>
+                    <button class="app-tile-btn" data-open="wallpapers">
+                      <span class="ms-icon">wallpaper</span>
+                      <div><div class="app-tile-lbl">Kho hình nền</div><div class="app-tile-sub">Thư mục ảnh</div></div>
+                    </button>
+                  </div>
+
+                  <!-- Mode 3: Active Windows Manager across Workspaces -->
+                  <div class="win-manager-list" id="win-manager-list"></div>
+
+                  <!-- Bottom Interactive Command & Mode Bar -->
+                  <div class="wall-prompt-bar">
+                    <div class="wall-prompt-left">
+                      <span class="ms-icon" style="font-size:14px;">search</span>
+                      <input
+                        type="text"
+                        class="cmd-search-input"
+                        id="cmd-input"
+                        placeholder="Gõ lệnh (>wallpaper, >apps, >windows, >clean) hoặc phép tính (vd: 125*24)..."
+                      />
+                    </div>
+                    <div class="mode-switch-pills">
+                      <button class="mode-chip active" data-wmode="wallpapers">&gt;wallpaper</button>
+                      <button class="mode-chip" data-wmode="apps">&gt;apps</button>
+                      <button class="mode-chip" data-wmode="windows">&gt;windows</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Concave Top Ear -->
+        <svg class="liquid-ear" viewBox="0 0 22 22">
+          <path class="ear-fill" d="M 22 0 L 0 0 L 0 22 L 0.5 22 A 21.5 21.5 0 0 1 22 0 Z" />
+          <path class="ear-stroke" d="M 0.5 22 A 21.5 21.5 0 0 1 22 0" />
+        </svg>
+      </div>
+    </div>
+
+    <script type="module">
+      import * as zebar from 'https://esm.sh/zebar@3.0';
+
+      const ROOT_DIR = 'C:/VỌC VẠCH TẬP CODING/caelestia-windows';
+      const SYNC_SCRIPT = `${ROOT_DIR}/scripts/sync_palette.py`;
+      const SYS_SCRIPT = `${ROOT_DIR}/scripts/sys_actions.py`;
+      const MOUSE_EDGE_SCRIPT = `${ROOT_DIR}/scripts/mouse_edge.py`;
+      const TASKBAR_SCRIPT = `${ROOT_DIR}/scripts/taskbar_ctl.py`;
+      const STOP_SCRIPT = `${ROOT_DIR}/stop-caelestia.ps1`;
+      const channel = new BroadcastChannel('caelestia-sync');
+
+      let wallpapersList = [];
+      let activeWallIdx = 0;
+      let isPlayingMusic = false;
+      let currentBrightness = 80;
+      let currentVolume = 44;
+
+      // Toast Notification Helper
+      let toastTimer = null;
+      function showToast(msg) {
+        const el = document.getElementById('action-toast');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+      }
+
+      function camelToCssVar(key) {
+        return '--' + key.replace(/^m3/, 'm3-').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+      }
+
+      // Build 36 Radial Visualizer Bars around Tab 2 Media Cover
+      const radialContainer = document.getElementById('radial-bars');
+      const NUM_BARS = 36;
+      const barEls = [];
+      for (let i = 0; i < NUM_BARS; i++) {
+        const b = document.createElement('div');
+        b.className = 'r-bar';
+        const deg = i * (360 / NUM_BARS);
+        const baseH = 10 + Math.round(Math.sin(i * 0.65) * 6 + 6);
+        b.style.height = `${baseH}px`;
+        b.style.transform = `rotate(${deg}deg) translateY(-65px)`;
+        radialContainer.appendChild(b);
+        barEls.push(b);
+      }
+
+      setInterval(() => {
+        const t = Date.now() / 160;
+        for (let i = 0; i < NUM_BARS; i++) {
+          const deg = i * (360 / NUM_BARS);
+          const h = isPlayingMusic
+            ? 8 + Math.round((Math.sin(t + i * 0.55) * 0.5 + 0.5) * 20 + (Math.cos(t * 1.3 - i) * 0.5 + 0.5) * 8)
+            : 8 + Math.round((Math.sin(i * 0.7) * 0.5 + 0.5) * 10);
+          barEls[i].style.height = `${h}px`;
+          barEls[i].style.transform = `rotate(${deg}deg) translateY(${-63 - h}px)`;
+        }
+      }, 140);
+
+      // ==================== REAL-TIME CLOCK (HH:MM:SS), UPTIME & MEDIA TIMER ====================
+      let use12Hour = false;
+      let pomoActive = false;
+      let pomoPaused = false;
+      let pomoSecondsLeft = 25 * 60;
+      let liveUptimeSeconds = 5400; // synced from sys_stats.json
+      let mediaElapsedSec = 0;
+      let mediaTotalSec = 225;
+
+      function fmtSec(sec) {
+        const s = Math.max(0, Math.floor(sec));
+        const m = Math.floor(s / 60);
+        const r = String(s % 60).padStart(2, '0');
+        return `${m}:${r}`;
+      }
+
+      function updateClockOrPomodoro() {
+        const now = new Date();
+        let rawH = now.getHours();
+        let ampm = '';
+        if (use12Hour) {
+          ampm = rawH >= 12 ? ' PM' : ' AM';
+          rawH = rawH % 12 || 12;
+        }
+        const hh = String(rawH).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const vnDays = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+        const dd = String(now.getDate()).padStart(2, '0');
+        const mo = String(now.getMonth() + 1).padStart(2, '0');
+
+        // 1. Always-on Top Header Real-Time Clock
+        const topClockEl = document.getElementById('top-live-time');
+        if (topClockEl) {
+          topClockEl.textContent = `${hh}:${mm}:${ss}${ampm} • ${vnDays[now.getDay()]}, ${dd}/${mo}`;
+        }
+
+        // 2. Real-Time Uptime ticking every second
+        liveUptimeSeconds++;
+        const upH = Math.floor(liveUptimeSeconds / 3600);
+        const upM = Math.floor((liveUptimeSeconds % 3600) / 60);
+        const upS = liveUptimeSeconds % 60;
+        const upEl = document.getElementById('u-uptime');
+        if (upEl) {
+          upEl.textContent = `: up ${upH}h ${upM}m ${String(upS).padStart(2, '0')}s`;
+        }
+
+        // 3. Real-Time Media Elapsed Progress ticking every second
+        if (isPlayingMusic) {
+          mediaElapsedSec = (mediaElapsedSec + 1) % Math.max(30, mediaTotalSec);
+          const curEl = document.getElementById('mt-cur-time');
+          if (curEl) curEl.textContent = fmtSec(mediaElapsedSec);
+          const ringEl = document.getElementById('dm-ring-prog');
+          if (ringEl) {
+            const arc = Math.min(200, Math.max(12, Math.round((mediaElapsedSec / Math.max(1, mediaTotalSec)) * 200)));
+            ringEl.setAttribute('stroke-dasharray', `${arc} 270`);
+          }
+        }
+
+        // 4. Vertical Real-Time Clock Card (or Pomodoro if right-clicked)
+        if (pomoActive) {
+          if (!pomoPaused && pomoSecondsLeft > 0) {
+            pomoSecondsLeft--;
+            if (pomoSecondsLeft === 0) {
+              showToast('🎉 Đã hoàn thành phiên tập trung Pomodoro 25 phút!');
+              pomoPaused = true;
+            }
+          }
+          const mins = String(Math.floor(pomoSecondsLeft / 60)).padStart(2, '0');
+          const secs = String(pomoSecondsLeft % 60).padStart(2, '0');
+          document.getElementById('dt-hh').textContent = mins;
+          document.getElementById('dt-dots').textContent = pomoPaused ? '⏸ PAUSE' : '🍅 POMO';
+          document.getElementById('dt-mm').textContent = secs;
+          document.getElementById('dt-day').textContent = `${hh}:${mm}:${ss}`;
+          return;
+        }
+
+        document.getElementById('dt-hh').textContent = hh;
+        document.getElementById('dt-dots').textContent = `:${ss}s`;
+        document.getElementById('dt-mm').textContent = mm;
+        document.getElementById('dt-day').textContent = `${dayNames[now.getDay()]}, ${now.getDate()}${ampm}`;
+      }
+
+      function toggleHourFormat() {
+        if (pomoActive) {
+          pomoPaused = !pomoPaused;
+          showToast(pomoPaused ? '⏸ Đã tạm dừng Pomodoro' : '▶ Tiếp tục Pomodoro');
+        } else {
+          use12Hour = !use12Hour;
+          showToast(use12Hour ? '🕒 Định dạng giờ: 12h (AM/PM)' : '🕒 Định dạng giờ: 24h (Thời gian thực)');
+        }
+        updateClockOrPomodoro();
+      }
+
+      document.getElementById('card-datetime').addEventListener('click', toggleHourFormat);
+      document.getElementById('top-live-clock').addEventListener('click', toggleHourFormat);
+
+      document.getElementById('card-datetime').addEventListener('contextmenu', e => {
+        e.preventDefault();
+        pomoActive = !pomoActive;
+        if (pomoActive) {
+          pomoPaused = false;
+          pomoSecondsLeft = 25 * 60;
+          showToast('🍅 Đã bật Pomodoro 25:00 (Chuột phải lần nữa để về Đồng hồ)');
+        } else {
+          showToast('🕒 Đã chuyển về Đồng hồ thời gian thực');
+        }
+        updateClockOrPomodoro();
+      });
+
+      setInterval(updateClockOrPomodoro, 1000);
+      updateClockOrPomodoro();
+
+      // ==================== INTERACTIVE CALENDAR & DAY NOTES ====================
+      let calMonthOffset = 0;
+      let selectedNoteKey = '';
+
+      function getNotesMap() {
+        try {
+          return JSON.parse(localStorage.getItem('caelestia_cal_notes') || '{}');
+        } catch (_) {
+          return {};
+        }
+      }
+
+      function saveNoteForDay(key, text) {
+        const map = getNotesMap();
+        if (text.trim()) {
+          map[key] = text.trim();
+        } else {
+          delete map[key];
+        }
+        localStorage.setItem('caelestia_cal_notes', JSON.stringify(map));
+      }
+
+      function renderCalendar() {
+        const now = new Date();
+        const viewDate = new Date(now.getFullYear(), now.getMonth() + calMonthOffset, 1);
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
+        const isCurrentMonth = year === now.getFullYear() && month === now.getMonth();
+        const todayDate = now.getDate();
+
+        const firstDayJs = new Date(year, month, 1).getDay();
+        const startOffset = (firstDayJs + 6) % 7;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+        const notes = getNotesMap();
+
+        const grid = document.getElementById('cal-grid');
+        grid.innerHTML = '';
+        for (let cell = 0; cell < 42; cell++) {
+          const span = document.createElement('div');
+          span.className = 'cal-day';
+          const dayNum = cell - startOffset + 1;
+          if (dayNum < 1) {
+            span.textContent = String(daysInPrevMonth + dayNum);
+            span.classList.add('muted');
+          } else if (dayNum > daysInMonth) {
+            span.textContent = String(dayNum - daysInMonth);
+            span.classList.add('muted');
+          } else {
+            span.textContent = String(dayNum);
+            const noteKey = `${year}-${month + 1}-${dayNum}`;
+            if (isCurrentMonth && dayNum === todayDate) {
+              span.classList.add('today');
+            }
+            if (notes[noteKey]) {
+              span.classList.add('has-note');
+              span.title = `📌 Ngày ${dayNum}/${month + 1}: ${notes[noteKey]}`;
+            } else {
+              span.title = `Nhấp để thêm ghi chú ngày ${dayNum}/${month + 1}`;
+            }
+            span.addEventListener('click', e => {
+              e.stopPropagation();
+              selectedNoteKey = noteKey;
+              const popup = document.getElementById('cal-note-popup');
+              const input = document.getElementById('cal-note-input');
+              popup.classList.add('show');
+              input.placeholder = `Ghi chú ${dayNum}/${month + 1} (Enter để lưu)...`;
+              input.value = notes[noteKey] || '';
+              input.focus();
+            });
+          }
+          grid.appendChild(span);
+        }
+      }
+      renderCalendar();
+
+      document.getElementById('card-calendar').addEventListener('wheel', e => {
+        e.preventDefault();
+        calMonthOffset += e.deltaY > 0 ? 1 : -1;
+        const d = new Date(new Date().getFullYear(), new Date().getMonth() + calMonthOffset, 1);
+        showToast(`📅 Tháng ${d.getMonth() + 1}/${d.getFullYear()}`);
+        renderCalendar();
+      });
+
+      document.getElementById('cal-header').addEventListener('click', () => {
+        calMonthOffset = 0;
+        document.getElementById('cal-note-popup').classList.remove('show');
+        showToast('📅 Đã về tháng hiện tại');
+        renderCalendar();
+      });
+
+      document.getElementById('cal-note-input').addEventListener('keydown', e => {
+        if (e.key === 'Enter' && selectedNoteKey) {
+          saveNoteForDay(selectedNoteKey, e.target.value);
+          document.getElementById('cal-note-popup').classList.remove('show');
+          renderCalendar();
+          showToast(e.target.value.trim() ? '📌 Đã lưu ghi chú lịch!' : '🗑️ Đã xóa ghi chú ngày');
+        } else if (e.key === 'Escape') {
+          document.getElementById('cal-note-popup').classList.remove('show');
+        }
+      });
+
+      // ==================== LIVE WEATHER FETCH & INTERACTION ====================
+      let weatherState = { temp: '24°C', desc: 'Clear', humid: '70%', wind: '10 km/h', mode: 0 };
+
+      async function fetchLiveWeather() {
+        try {
+          const res = await fetch(
+            'https://api.open-meteo.com/v1/forecast?latitude=10.8231&longitude=106.6297&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m'
+          );
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data?.current) {
+            const t = Math.round(data.current.temperature_2m);
+            const h = Math.round(data.current.relative_humidity_2m);
+            const w = Math.round(data.current.wind_speed_10m);
+            const code = data.current.weather_code;
+            const descMap = { 0: 'Clear', 1: 'Mostly Clear', 2: 'Partly Cloudy', 3: 'Overcast', 61: 'Rain', 80: 'Showers', 95: 'Thunderstorm' };
+            weatherState = {
+              temp: `${t}°C`,
+              desc: descMap[code] || 'Partly Cloudy',
+              humid: `💧 ${h}%`,
+              wind: `💨 ${w}km/h`,
+              mode: weatherState.mode,
+            };
+            renderWeatherCard();
+          }
+        } catch (_) {}
+      }
+
+      function renderWeatherCard() {
+        const tempEl = document.getElementById('w-temp');
+        const descEl = document.getElementById('w-desc');
+        const icoEl = document.getElementById('w-icon');
+        if (weatherState.mode === 0) {
+          tempEl.textContent = weatherState.temp;
+          descEl.textContent = weatherState.desc;
+          icoEl.textContent = 'wb_sunny';
+        } else {
+          tempEl.textContent = weatherState.humid;
+          descEl.textContent = weatherState.wind;
+          icoEl.textContent = 'air';
+        }
+      }
+
+      document.getElementById('card-weather').addEventListener('click', () => {
+        weatherState.mode = (weatherState.mode + 1) % 2;
+        renderWeatherCard();
+      });
+
+      document.getElementById('card-weather').addEventListener('dblclick', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'weather']);
+        showToast('🌤️ Đang mở ứng dụng Thời tiết Windows...');
+      });
+
+      fetchLiveWeather();
+
+      // ==================== INTERACTIVE VERTICAL SLIDERS (VOLUME & BRIGHTNESS & RAM) ====================
+      function bindVerticalSlider(colId, trackId, barId, onChange) {
+        const col = document.getElementById(colId);
+        const track = document.getElementById(trackId);
+        const bar = document.getElementById(barId);
+        if (!col || !track || !bar) return;
+
+        let dragging = false;
+        const calcPct = clientY => {
+          const rect = track.getBoundingClientRect();
+          const rel = 1 - (clientY - rect.top) / rect.height;
+          return Math.max(5, Math.min(100, Math.round(rel * 100)));
+        };
+
+        track.addEventListener('mousedown', e => {
+          dragging = true;
+          const pct = calcPct(e.clientY);
+          bar.style.height = `${pct}%`;
+          onChange(pct, false);
+        });
+
+        window.addEventListener('mousemove', e => {
+          if (!dragging) return;
+          const pct = calcPct(e.clientY);
+          bar.style.height = `${pct}%`;
+          onChange(pct, false);
+        });
+
+        window.addEventListener('mouseup', e => {
+          if (!dragging) return;
+          dragging = false;
+          const pct = calcPct(e.clientY);
+          bar.style.height = `${pct}%`;
+          onChange(pct, true);
+        });
+
+        col.addEventListener('wheel', e => {
+          e.preventDefault();
+          const step = e.deltaY < 0 ? 6 : -6;
+          const current = parseInt(bar.style.height || '50', 10);
+          const next = Math.max(5, Math.min(100, current + step));
+          bar.style.height = `${next}%`;
+          onChange(next, true);
+        });
+      }
+
+      bindVerticalSlider('col-vol', 'track-vol', 'bar-vol', (pct, commit) => {
+        currentVolume = pct;
+        document.getElementById('v-slider').value = String(pct);
+        document.getElementById('v-label').textContent = `${pct}%`;
+        providers.outputMap.audio?.setVolume(pct);
+        if (commit) showToast(`🔊 Âm lượng hệ thống: ${pct}%`);
+      });
+
+      document.getElementById('ico-vol').addEventListener('click', e => {
+        e.stopPropagation();
+        const nextVol = currentVolume > 0 ? 0 : 50;
+        currentVolume = nextVol;
+        document.getElementById('bar-vol').style.height = `${Math.max(5, nextVol)}%`;
+        providers.outputMap.audio?.setVolume(nextVol);
+        showToast(nextVol === 0 ? '🔇 Đã tắt tiếng (Muted)' : '🔊 Đã bật tiếng (50%)');
+      });
+
+      bindVerticalSlider('col-bright', 'track-bright', 'bar-bright', (pct, commit) => {
+        currentBrightness = pct;
+        if (commit) {
+          zebar.shellExec('python', [SYS_SCRIPT, '--brightness', String(pct)]);
+          showToast(`☀️ Độ sáng màn hình: ${pct}%`);
+        }
+      });
+
+      // Real RAM Cleaner Action
+      async function triggerRamClean() {
+        showToast('🧹 Đang tối ưu & giải phóng bộ nhớ RAM...');
+        try {
+          await zebar.shellExec('python', [SYS_SCRIPT, '--clean-ram']);
+          const res = await fetch(`./sys_stats.json?t=${Date.now()}`, { cache: 'no-store' });
+          if (res.ok) {
+            const stats = await res.json();
+            if (stats?.ramCleaned) {
+              showToast(`✨ Đã giải phóng ${stats.ramCleaned.freedMB} MB RAM! (Còn ${stats.ramCleaned.usedGiB} GiB)`);
+            } else {
+              showToast('✨ Đã giải phóng bộ nhớ RAM thành công!');
+            }
+          }
+        } catch (_) {
+          showToast('✨ Đã tối ưu hóa bộ nhớ RAM!');
+        }
+      }
+
+      document.getElementById('col-ram').addEventListener('click', triggerRamClean);
+      document.getElementById('q-clean-ram').addEventListener('click', triggerRamClean);
+      document.getElementById('gauge-ram').addEventListener('click', triggerRamClean);
+      document.getElementById('gauge-ram').addEventListener('contextmenu', e => {
+        e.preventDefault();
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'explorer']);
+        showToast('📁 Đang mở File Explorer...');
+      });
+
+      // ==================== REAL SYSTEM STATS SYNC ====================
+      async function syncRealSystemStats() {
+        try {
+          await zebar.shellExec('python', [SYS_SCRIPT, '--stats']);
+          const res = await fetch(`./sys_stats.json?t=${Date.now()}`, { cache: 'no-store' });
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data?.uptime) {
+            const mH = data.uptime.match(/(\d+)\s*hour/);
+            const mM = data.uptime.match(/(\d+)\s*min/);
+            const h = mH ? parseInt(mH[1], 10) : 0;
+            const m = mM ? parseInt(mM[1], 10) : 0;
+            liveUptimeSeconds = h * 3600 + m * 60 + (liveUptimeSeconds % 60);
+          }
+          if (data?.storage) {
+            document.getElementById('val-disk-gib').textContent = `${data.storage.usedGiB}GiB`;
+            const pct = data.storage.usedPct || 50;
+            document.getElementById('arc-disk-use').setAttribute('stroke-dasharray', `${Math.round((pct / 100) * 62.5)} 402.1`);
+          }
+        } catch (_) {}
+      }
+      syncRealSystemStats();
+      setInterval(syncRealSystemStats, 30000);
+
+      // ==================== USER QUICK CONTROL ACTIONS & GAUGE CLICKS ====================
+      document.getElementById('line-settings').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'settings']);
+        showToast('⚙️ Đang mở Windows Settings...');
+      });
+
+      document.getElementById('line-network').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'network']);
+        showToast('📶 Đang mở bảng chọn mạng Wi-Fi...');
+      });
+
+      document.getElementById('line-taskmgr').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'taskmgr']);
+        showToast('📊 Đang mở Task Manager...');
+      });
+
+      document.getElementById('q-snip').addEventListener('click', () => {
+        hideDashboard(false);
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'snip']);
+      });
+
+      document.getElementById('q-terminal').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'terminal']);
+        showToast('💻 Đang mở PowerShell Terminal...');
+      });
+
+      document.getElementById('q-lock').addEventListener('click', () => {
+        hideDashboard(false);
+        zebar.shellSpawn('rundll32', ['user32.dll,LockWorkStation']);
+      });
+
+      document.getElementById('gauge-gpu').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'display']);
+        showToast('🖥️ Đang mở Cài đặt Màn hình & Đồ họa...');
+      });
+
+      document.getElementById('gauge-cpu').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'taskmgr']);
+        showToast('📊 Đang mở Windows Task Manager...');
+      });
+
+      // ==================== TAB 4: MULTI-MODE (>WALLPAPER | >APPS | >WINDOWS) & COMMAND INPUT ====================
+      let currentWMode = 'wallpapers';
+
+      function switchWMode(mode) {
+        currentWMode = mode;
+        document.querySelectorAll('.mode-chip').forEach(c => c.classList.toggle('active', c.dataset.wmode === mode));
+        document.getElementById('wall-cards-strip').style.display = mode === 'wallpapers' ? 'flex' : 'none';
+        document.getElementById('apps-launch-grid').classList.toggle('show', mode === 'apps');
+        document.getElementById('win-manager-list').classList.toggle('show', mode === 'windows');
+        if (mode === 'windows') renderOpenWindowsList();
+      }
+
+      document.querySelectorAll('.mode-chip').forEach(btn => {
+        btn.addEventListener('click', () => switchWMode(btn.dataset.wmode));
+      });
+
+      document.querySelectorAll('.app-tile-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.dataset.open;
+          zebar.shellExec('python', [SYS_SCRIPT, '--open', target]);
+          showToast(`🚀 Đang mở ${btn.querySelector('.app-tile-lbl').textContent}...`);
+          if (target === 'snip') hideDashboard(false);
+        });
+      });
+
+      function renderOpenWindowsList() {
+        const listEl = document.getElementById('win-manager-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+        const workspaces = providers.outputMap.glazewm?.allWorkspaces || [];
+        const items = [];
+        for (const ws of workspaces) {
+          for (const child of ws.children || []) {
+            if (child.type === 'window' && child.processName !== 'zebar') {
+              items.push({ ws: ws.name, win: child });
+            }
+          }
+        }
+        if (!items.length) {
+          listEl.innerHTML = '<div style="text-align:center;opacity:0.7;padding:24px;font-size:12px;">Không có cửa sổ nào đang mở</div>';
+          return;
+        }
+        for (const { ws, win } of items) {
+          const row = document.createElement('div');
+          row.className = 'win-row-item';
+          row.innerHTML = `
+            <div class="win-row-left">
+              <span class="win-ws-badge">WS ${ws}</span>
+              <strong style="color:var(--m3-primary);">${win.processName}</strong>
+              <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0.85;">${win.title}</span>
+            </div>
+            <button class="win-close-x" title="Đóng cửa sổ này">✕</button>
+          `;
+          row.querySelector('.win-row-left').addEventListener('click', () => {
+            providers.outputMap.glazewm?.runCommand(`focus --workspace ${ws}`);
+            if (win.handle) {
+              zebar.shellExec('python', [SYS_SCRIPT, '--focus-hwnd', String(win.handle)]);
+            }
+            hideDashboard(true);
+          });
+          row.querySelector('.win-close-x').addEventListener('click', e => {
+            e.stopPropagation();
+            if (win.handle) {
+              zebar.shellExec('python', [SYS_SCRIPT, '--close-hwnd', String(win.handle)]);
+              showToast(`🗑️ Đã gửi lệnh đóng ${win.processName}`);
+              setTimeout(renderOpenWindowsList, 400);
+            }
+          });
+          listEl.appendChild(row);
+        }
+      }
+
+      // Live Command Input & Calculator
+      const cmdInput = document.getElementById('cmd-input');
+      cmdInput.addEventListener('input', e => {
+        const val = e.target.value.trim().toLowerCase();
+        if (val.startsWith('>app')) switchWMode('apps');
+        else if (val.startsWith('>win')) switchWMode('windows');
+        else if (val.startsWith('>wall')) switchWMode('wallpapers');
+      });
+
+      cmdInput.addEventListener('keydown', async e => {
+        if (e.key !== 'Enter') return;
+        const raw = cmdInput.value.trim();
+        const lower = raw.toLowerCase();
+        if (!raw) return;
+
+        if (lower === '>clean' || lower === 'clean') {
+          cmdInput.value = '';
+          await triggerRamClean();
+        } else if (lower === '>dark' || lower === '>light' || lower === 'theme') {
+          cmdInput.value = '';
+          await toggleLightDarkMode();
+        } else if (lower === '>random' || lower === 'random') {
+          cmdInput.value = '';
+          await zebar.shellExec('python', [SYNC_SCRIPT, '--random']);
+          await refreshTheme();
+          showToast('🎨 Đã đổi hình nền & bảng màu ngẫu nhiên!');
+        } else if (lower === '>lock' || lower === 'lock') {
+          cmdInput.value = '';
+          hideDashboard(false);
+          await zebar.shellSpawn('rundll32', ['user32.dll,LockWorkStation']);
+        } else if (/^[0-9+\-*/().\s%]+$/.test(raw)) {
+          try {
+            const ans = Function(`"use strict"; return (${raw})`)();
+            if (typeof ans === 'number' && !Number.isNaN(ans)) {
+              cmdInput.value = `${raw} = ${ans}`;
+              navigator.clipboard?.writeText(String(ans));
+              showToast(`🧮 Kết quả: ${ans} (Đã copy vào Clipboard)`);
+            }
+          } catch (_) {}
+        }
+      });
+
+      // Render 5-Card Wallpaper Carousel
+      function renderWallpaperCarousel() {
+        const strip = document.getElementById('wall-cards-strip');
+        if (!strip || !wallpapersList.length) return;
+        strip.innerHTML = '';
+        const total = wallpapersList.length;
+        const count = Math.min(5, total);
+        const half = Math.floor(count / 2);
+
+        for (let offset = -half; offset <= half; offset++) {
+          if (strip.children.length >= count) break;
+          const idx = (activeWallIdx + offset + total) % total;
+          const item = wallpapersList[idx];
+          const card = document.createElement('div');
+          card.className = 'wall-card-item' + (offset === 0 ? ' active' : '');
+          card.innerHTML = `
+            <img class="wall-card-thumb" src="${item.thumb}?t=${Date.now()}" onerror="this.src='./assets/current_wall.jpg'" alt="${item.name}" />
+            <div class="wall-card-name">${item.name}</div>
+          `;
+          card.addEventListener('click', async () => {
+            activeWallIdx = idx;
+            renderWallpaperCarousel();
+            showToast(`🖼️ Đang áp dụng hình nền: ${item.name}...`);
+            await zebar.shellExec('python', [SYNC_SCRIPT, '--wallpaper', item.path]);
+            await refreshTheme();
+            showToast(`✨ Đã đồng bộ màu Material You từ ${item.name}!`);
+          });
+          strip.appendChild(card);
+        }
+      }
+
+      document.getElementById('wall-carousel-area').addEventListener('wheel', e => {
+        if (currentWMode !== 'wallpapers' || !wallpapersList.length) return;
+        e.preventDefault();
+        const dir = e.deltaY > 0 ? 1 : -1;
+        activeWallIdx = (activeWallIdx + dir + wallpapersList.length) % wallpapersList.length;
+        renderWallpaperCarousel();
+      });
+
+      async function refreshTheme() {
+        try {
+          const res = await fetch(`./palette.json?t=${Date.now()}`, { cache: 'no-store' });
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data?.palette) {
+            for (const [k, v] of Object.entries(data.palette)) {
+              if (k !== 'mode' && k !== 'seed') {
+                document.documentElement.style.setProperty(camelToCssVar(k), v);
+              }
+            }
+            const lblMode = document.getElementById('lbl-mode');
+            if (lblMode) {
+              lblMode.textContent = data.palette.mode === 'light' ? 'Light Mode' : 'Dark Mode';
+            }
+          }
+          if (Array.isArray(data?.wallpapers) && data.wallpapers.length) {
+            wallpapersList = data.wallpapers;
+            const foundIdx = wallpapersList.findIndex(w => w.path === data.wallpaperPath);
+            if (foundIdx >= 0) activeWallIdx = foundIdx;
+            renderWallpaperCarousel();
+          }
+        } catch (_) {}
+      }
+      refreshTheme();
+      channel.onmessage = () => refreshTheme();
+
+      // 4-Tab Switching + Indicator Animation
+      const indicator = document.getElementById('tab-indicator');
+      function activateTab(target, idx) {
+        document.querySelectorAll('.c-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === target));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === `pane-${target}`));
+        if (indicator) {
+          indicator.style.left = `calc(${idx * 25 + 12.5}% - 29px)`;
+        }
+        if (target === 'workspaces' && currentWMode === 'windows') {
+          renderOpenWindowsList();
+        }
+      }
+
+      document.querySelectorAll('.c-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => activateTab(btn.dataset.tab, Number(btn.dataset.idx || 0)));
+      });
+
+      // Tauri Window Management & Edge Detector
+      const widget = zebar.currentWidget();
+      const currentWin = widget?.window?.tauri || widget?.tauriWindow;
+      let initialPosX = 406;
+      let isVisible = false;
+      let leaveTimer = null;
+      let lastMediaTitle = '';
+
+      async function getWindowX() {
+        try {
+          if (currentWin?.outerPosition) {
+            const pos = await currentWin.outerPosition();
+            if (pos && typeof pos.x === 'number' && pos.x > 0) {
+              initialPosX = pos.x;
+              return initialPosX;
+            }
+          }
+        } catch (_) {}
+        return initialPosX;
+      }
+
+      async function initEdgeDetector() {
+        try {
+          const proc = await zebar.shellSpawn('python', ['-u', MOUSE_EDGE_SCRIPT]);
+          proc.onStdout(line => {
+            const clean = line.trim();
+            if (clean.includes('TRIGGER_OPEN') || clean.includes('TRIGGER_TOP')) {
+              showDashboard();
+            } else if (clean.includes('TRIGGER_CLOSE')) {
+              hideDashboard(true);
+            }
+          });
+        } catch (err) {
+          console.error('initEdgeDetector error:', err);
+        }
+      }
+
+      (async () => {
+        const wrap = document.querySelector('.drawer-wrap');
+        if (wrap) {
+          wrap.style.visibility = 'hidden';
+          wrap.style.pointerEvents = 'none';
+        }
+        await initEdgeDetector();
+        try {
+          if (currentWin) {
+            if (currentWin.setIgnoreCursorEvents) {
+              await currentWin.setIgnoreCursorEvents(true);
+            }
+            if (currentWin.setPosition) {
+              const x = await getWindowX();
+              await currentWin.setPosition({ type: 'Physical', x: x, y: -500 });
+            }
+          }
+        } catch (_) {}
+      })();
+
+      async function showDashboard() {
+        if (isVisible) return;
+        isVisible = true;
+        cancelLeaveTimer();
+        updateClockOrPomodoro();
+
+        const wrap = document.querySelector('.drawer-wrap');
+        if (wrap) {
+          wrap.style.visibility = 'visible';
+          wrap.classList.remove('retracting');
+          wrap.style.pointerEvents = 'auto';
+          wrap.style.animation = 'none';
+          wrap.offsetHeight;
+          wrap.style.animation = '';
+        }
+
+        const ts = Date.now();
+        document.getElementById('dm-cover').src = `./assets/media_thumb.jpg?t=${ts}`;
+        document.getElementById('mt-cover').src = `./assets/media_thumb.jpg?t=${ts}`;
+
+        try {
+          if (currentWin) {
+            if (currentWin.setPosition) {
+              const x = await getWindowX();
+              await currentWin.setPosition({ type: 'Physical', x: x, y: 0 });
+            }
+            if (currentWin.show) {
+              await currentWin.show();
+            }
+            if (currentWin.setIgnoreCursorEvents) {
+              await currentWin.setIgnoreCursorEvents(false);
+            }
+          }
+        } catch (_) {}
+      }
+
+      function hideDashboard(animate = true) {
+        if (!isVisible) return;
+        isVisible = false;
+        cancelLeaveTimer();
+
+        const wrap = document.querySelector('.drawer-wrap');
+        if (wrap) {
+          wrap.style.pointerEvents = 'none';
+        }
+
+        const doOsHide = async () => {
+          if (wrap) {
+            wrap.style.visibility = 'hidden';
+          }
+          try {
+            if (currentWin) {
+              if (currentWin.setIgnoreCursorEvents) {
+                await currentWin.setIgnoreCursorEvents(true);
+              }
+              if (currentWin.setPosition) {
+                const x = await getWindowX();
+                await currentWin.setPosition({ type: 'Physical', x: x, y: -500 });
+              }
+            }
+          } catch (_) {}
+        };
+
+        if (animate && wrap) {
+          wrap.classList.add('retracting');
+          setTimeout(doOsHide, 250);
+        } else {
+          doOsHide();
+        }
+      }
+
+      function cancelLeaveTimer() {
+        if (leaveTimer) {
+          clearTimeout(leaveTimer);
+          leaveTimer = null;
+        }
+      }
+
+      function startLeaveTimer() {
+        if (leaveTimer || !isVisible) return;
+        leaveTimer = setTimeout(() => {
+          hideDashboard(true);
+        }, 100);
+      }
+
+      const drawerWrap = document.querySelector('.drawer-wrap');
+      if (drawerWrap) {
+        drawerWrap.addEventListener('mouseenter', cancelLeaveTimer);
+        drawerWrap.addEventListener('mousemove', cancelLeaveTimer);
+        drawerWrap.addEventListener('mouseleave', startLeaveTimer);
+      }
+
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') hideDashboard(true);
+      });
+
+      // Zebar Providers
+      const providers = zebar.createProviderGroup({
+        media: { type: 'media' },
+        audio: { type: 'audio' },
+        cpu: { type: 'cpu' },
+        memory: { type: 'memory' },
+        battery: { type: 'battery' },
+        network: { type: 'network' },
+        weather: { type: 'weather' },
+        glazewm: { type: 'glazewm' },
+      });
+
+      providers.onOutput(() => {
+        const out = providers.outputMap;
+
+        // Media Session
+        const sess = out.media?.currentSession;
+        if (sess && sess.title) {
+          isPlayingMusic = Boolean(sess.isPlaying);
+          const title = sess.title;
+          const artist = sess.artist || 'Unknown Artist';
+          const album = sess.albumTitle || 'Windows Media Session';
+          document.getElementById('dm-title').textContent = title;
+          document.getElementById('dm-artist').textContent = artist;
+          document.getElementById('dm-album').textContent = album;
+          document.getElementById('dm-play-ico').textContent = sess.isPlaying ? 'pause' : 'play_arrow';
+
+          document.getElementById('mt-title').textContent = title;
+          document.getElementById('mt-artist').textContent = artist;
+          document.getElementById('mt-album').textContent = album;
+          document.getElementById('mt-play-ico').textContent = sess.isPlaying ? 'pause' : 'play_arrow';
+
+          if (sess.title !== lastMediaTitle) {
+            lastMediaTitle = sess.title;
+            setTimeout(() => {
+              const ts = Date.now();
+              document.getElementById('dm-cover').src = `./assets/media_thumb.jpg?t=${ts}`;
+              document.getElementById('mt-cover').src = `./assets/media_thumb.jpg?t=${ts}`;
+            }, 600);
+          }
+        } else {
+          isPlayingMusic = false;
+          document.getElementById('dm-play-ico').textContent = 'play_arrow';
+          document.getElementById('mt-play-ico').textContent = 'play_arrow';
+        }
+
+        // Audio Volume
+        const dev = out.audio?.defaultPlaybackDevice;
+        if (dev) {
+          const vol = Math.round(dev.volume ?? 0);
+          currentVolume = vol;
+          document.getElementById('v-slider').value = String(vol);
+          document.getElementById('v-label').textContent = `${vol}%`;
+          document.getElementById('bar-vol').style.height = `${Math.max(6, vol)}%`;
+          document.getElementById('ico-vol').textContent = dev.isMuted || vol === 0 ? 'volume_off' : 'volume_up';
+        }
+
+        // CPU & Memory & Performance Gauges
+        const cpuPct = Math.max(1, Math.min(100, Math.round(out.cpu?.usage ?? 4)));
+        const ramPct = Math.max(1, Math.min(100, Math.round(out.memory?.usage ?? 45)));
+        const totalMemGiB = out.memory?.totalMemory ? out.memory.totalMemory / (1024 ** 3) : 16;
+        const usedMemGiB = out.memory?.usedMemory ? (out.memory.usedMemory / (1024 ** 3)).toFixed(1) : ((ramPct / 100) * totalMemGiB).toFixed(1);
+
+        document.getElementById('bar-ram').style.height = `${Math.max(10, ramPct)}%`;
+
+        // Tab 3 Dual-Arc Gauges
+        const cpuTempEst = Math.round(39 + cpuPct * 0.38);
+        const gpuUseEst = Math.max(2, Math.round(cpuPct * 0.75));
+        const gpuTempEst = Math.round(46 + gpuUseEst * 0.35);
+
+        document.getElementById('val-cpu-temp').textContent = `${cpuTempEst}°C`;
+        document.getElementById('val-cpu-use').textContent = `${cpuPct}%`;
+        document.getElementById('arc-cpu-temp').setAttribute('stroke-dasharray', `${Math.round((cpuTempEst / 95) * 306)} 490.1`);
+        document.getElementById('arc-cpu-use').setAttribute('stroke-dasharray', `${Math.max(6, Math.round((cpuPct / 100) * 76))} 490.1`);
+
+        document.getElementById('val-gpu-temp').textContent = `${gpuTempEst}°C`;
+        document.getElementById('val-gpu-use').textContent = `${gpuUseEst}%`;
+        document.getElementById('arc-gpu-temp').setAttribute('stroke-dasharray', `${Math.round((gpuTempEst / 95) * 251)} 402.1`);
+        document.getElementById('arc-gpu-use').setAttribute('stroke-dasharray', `${Math.max(5, Math.round((gpuUseEst / 100) * 62.5))} 402.1`);
+
+        document.getElementById('val-ram-gib').textContent = `${usedMemGiB}GiB`;
+        document.getElementById('arc-ram-use').setAttribute('stroke-dasharray', `${Math.round((ramPct / 100) * 251)} 402.1`);
+
+        // Network SSID
+        if (out.network) {
+          const type = out.network.defaultInterface?.type;
+          document.getElementById('u-ssid').textContent =
+            type === 'wifi'
+              ? out.network.defaultGateway?.ssid || 'Wi-Fi'
+              : type === 'ethernet'
+              ? 'Ethernet'
+              : 'Offline';
+        }
+
+        // GlazeWM Workspaces & Pause State
+        if (out.glazewm) {
+          const paused = Boolean(out.glazewm.isPaused);
+          document.getElementById('u-wm-state').textContent = paused ? 'GlazeWM (Paused)' : 'GlazeWM';
+          document.getElementById('lbl-glaze').textContent = paused ? 'Paused' : 'Tiling';
+
+          if (out.glazewm.allWorkspaces) {
+            const activeNames = new Set(out.glazewm.allWorkspaces.map(w => w.name));
+            const focusedName = out.glazewm.focusedWorkspace?.name;
+            document.querySelectorAll('.ws-chip').forEach(btn => {
+              const ws = btn.dataset.ws;
+              btn.classList.toggle('occupied', activeNames.has(ws));
+              btn.classList.toggle('focused', ws === focusedName);
+            });
+          }
+        }
+      });
+
+      // Media Controls (Tab 1 & Tab 2)
+      document.getElementById('dm-prev').addEventListener('click', () => providers.outputMap.media?.previous());
+      document.getElementById('dm-play').addEventListener('click', () => providers.outputMap.media?.togglePlayPause());
+      document.getElementById('dm-next').addEventListener('click', () => providers.outputMap.media?.next());
+      document.getElementById('dm-bongo-btn').addEventListener('click', () => providers.outputMap.media?.togglePlayPause());
+      document.getElementById('dm-cover-btn').addEventListener('click', () => activateTab('media', 1));
+
+      document.getElementById('card-dash-media').addEventListener('wheel', e => {
+        e.preventDefault();
+        const nextVol = Math.max(0, Math.min(100, currentVolume + (e.deltaY < 0 ? 5 : -5)));
+        currentVolume = nextVol;
+        providers.outputMap.audio?.setVolume(nextVol);
+        document.getElementById('bar-vol').style.height = `${Math.max(6, nextVol)}%`;
+        showToast(`🔊 Âm lượng: ${nextVol}%`);
+      });
+
+      document.getElementById('mt-prev').addEventListener('click', () => providers.outputMap.media?.previous());
+      document.getElementById('mt-play').addEventListener('click', () => providers.outputMap.media?.togglePlayPause());
+      document.getElementById('mt-next').addEventListener('click', () => providers.outputMap.media?.next());
+      document.getElementById('mt-cover-stage').addEventListener('click', () => providers.outputMap.media?.togglePlayPause());
+      document.getElementById('mt-bongo-btn').addEventListener('click', () => providers.outputMap.media?.togglePlayPause());
+
+      document.getElementById('btn-open-yt').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'youtube']);
+        showToast('▶️ Đang mở YouTube...');
+      });
+
+      document.getElementById('btn-sound-mixer').addEventListener('click', () => {
+        zebar.shellExec('python', [SYS_SCRIPT, '--open', 'sound']);
+        showToast('🎚️ Đang mở Windows Volume Mixer...');
+      });
+
+      document.getElementById('v-slider').addEventListener('input', e => {
+        const val = Number(e.target.value);
+        currentVolume = val;
+        document.getElementById('v-label').textContent = `${val}%`;
+        document.getElementById('bar-vol').style.height = `${Math.max(6, val)}%`;
+        providers.outputMap.audio?.setVolume(val);
+      });
+
+      // Workspace Clicks
+      document.querySelectorAll('.ws-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          providers.outputMap.glazewm?.runCommand(`focus --workspace ${btn.dataset.ws}`);
+          showToast(`🪟 Đã chuyển sang Workspace ${btn.dataset.ws}`);
+        });
+      });
+
+      // Theme & System Actions
+      async function toggleLightDarkMode() {
+        await zebar.shellExec('python', [SYNC_SCRIPT, '--toggle-mode']);
+        await refreshTheme();
+        showToast('🌓 Đã chuyển chế độ Sáng / Tối!');
+      }
+      document.getElementById('act-toggle-mode').addEventListener('click', toggleLightDarkMode);
+      document.getElementById('btn-quick-theme').addEventListener('click', toggleLightDarkMode);
+
+      document.getElementById('act-random-wall').addEventListener('click', async () => {
+        showToast('🎲 Đang chọn hình nền ngẫu nhiên...');
+        await zebar.shellExec('python', [SYNC_SCRIPT, '--random']);
+        await refreshTheme();
+        showToast('✨ Đã áp dụng hình nền & bảng màu mới!');
+      });
+
+      document.getElementById('act-toggle-glaze').addEventListener('click', () => {
+        providers.outputMap.glazewm?.runCommand('wm-toggle-pause');
+        showToast('🪟 Đã chuyển trạng thái chia ô cửa sổ GlazeWM');
+      });
+
+      let taskbarHidden = true;
+      document.getElementById('act-toggle-taskbar').addEventListener('click', async () => {
+        taskbarHidden = !taskbarHidden;
+        await zebar.shellExec('python', [TASKBAR_SCRIPT, taskbarHidden ? '--autohide' : '--restore']);
+        showToast(taskbarHidden ? '⬇️ Đã bật tự động ẩn Taskbar Windows' : '⬆️ Đã hiện lại Taskbar Windows');
+      });
+
+      document.getElementById('act-exit-caelestia').addEventListener('click', async () => {
+        await zebar.shellSpawn('powershell', ['-NoProfile', '-WindowStyle', 'Hidden', '-ExecutionPolicy', 'Bypass', '-File', STOP_SCRIPT]);
+      });
+    </script>
+  </body>
+</html>

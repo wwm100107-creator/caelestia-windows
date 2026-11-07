@@ -1,0 +1,20 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Runtime daemon / state files
+*.pid
+*.open
+mouse_edge.pid
+dashboard.open
+state.json
+sys_stats.json
+zebar-pack/sys_stats.json
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

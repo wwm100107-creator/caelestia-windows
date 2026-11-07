@@ -1,0 +1,54 @@
+{
+  "$schema": "https://github.com/glzr-io/zebar/raw/v3.0.0/resources/zpack-schema.json",
+  "name": "caelestia-shell",
+  "version": "1.0.0",
+  "description": "Caelestia Material 3 Fluid Desktop Shell for Windows (Vertical Bar + Morphing Top Dashboard)",
+  "tags": ["sidebar", "material-you", "caelestia", "glazewm"],
+  "previewImages": [],
+  "repositoryUrl": "https://github.com/caelestia-dots/shell",
+  "widgets": [
+    {
+      "name": "dashboard",
+      "htmlPath": "./dashboard.html",
+      "zOrder": "top_most",
+      "shownInTaskbar": false,
+      "focused": false,
+      "resizable": false,
+      "transparent": true,
+      "includeFiles": ["*.html", "*.css", "*.js", "*.json", "assets/**"],
+      "caching": {
+        "defaultDuration": 0,
+        "rules": []
+      },
+      "privileges": {
+        "shellCommands": [
+          { "program": "python", "argsRegex": ".*" },
+          { "program": "powershell", "argsRegex": ".*" },
+          { "program": "explorer", "argsRegex": ".*" },
+          { "program": "rundll32", "argsRegex": ".*" },
+          { "program": "cmd", "argsRegex": ".*" },
+          { "program": "taskmgr", "argsRegex": ".*" },
+          { "program": "calc", "argsRegex": ".*" }
+        ]
+      },
+      "presets": [
+        {
+          "name": "default",
+          "anchor": "top_center",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "width": "780px",
+          "height": "385px",
+          "monitorSelection": {
+            "type": "primary"
+          },
+          "dockToEdge": {
+            "enabled": false,
+            "edge": null,
+            "windowMargin": "0px"
+          }
+        }
+      ]
+    }
+  ]
+}

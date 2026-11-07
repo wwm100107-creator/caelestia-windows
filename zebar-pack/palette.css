@@ -1,0 +1,35 @@
+:root {
+  --m3-background: #030301;
+  --m3-on-background: #e4e4d8;
+  --m3-surface: #050501;
+  --m3-surface-dim: #020200;
+  --m3-surface-bright: #27271e;
+  --m3-surface-container-lowest: #010100;
+  --m3-surface-container-low: #0a0a04;
+  --m3-surface-container: #111109;
+  --m3-surface-container-high: #1d1d14;
+  --m3-surface-container-highest: #292920;
+  --m3-on-surface: #e8e7db;
+  --m3-surface-variant: #373722;
+  --m3-on-surface-variant: #c4c4ab;
+  --m3-outline: #8a8972;
+  --m3-outline-variant: #373722;
+  --m3-primary: #cdc85c;
+  --m3-on-primary: #1f1e00;
+  --m3-primary-container: #3a3700;
+  --m3-on-primary-container: #ebe67b;
+  --m3-secondary: #c6c5a0;
+  --m3-on-secondary: #1f1e00;
+  --m3-secondary-container: #383717;
+  --m3-on-secondary-container: #e4e3be;
+  --m3-tertiary: #8ad6ab;
+  --m3-on-tertiary: #002412;
+  --m3-tertiary-container: #00472a;
+  --m3-on-tertiary-container: #aefbcf;
+  --m3-error: #ffb4ab;
+  --m3-on-error: #690005;
+  --m3-error-container: #93000a;
+  --m3-success: #b5ccba;
+  --m3-success-container: #374b3e;
+  --m3-seed: #363634;
+}
